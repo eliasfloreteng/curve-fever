@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Curve Fever – Play Achtung, die Kurve! Online Free (No Flash)</title>
+  <meta name="description" content="Play Curve Fever 1 again in your browser – a faithful HTML5 remake of the classic Flash game and Achtung, die Kurve! Up to 6 players on one keyboard, powerups, computer opponents. Free, no Flash, no download.">
+  <meta name="keywords" content="curve fever, curve fever 1, curve fever classic, achtung die kurve, achtung, zatacka, zatacka online, snake multiplayer, local multiplayer game, one keyboard multiplayer, flash game remake, html5 game, free browser game">
+  <meta name="author" content="Elias Floreteng">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#000000">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://eliasfloreteng.github.io/curve-fever/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Curve Fever Classic">
+  <meta property="og:title" content="Curve Fever – Play Achtung, die Kurve! Online Free">
+  <meta property="og:description" content="The classic Curve Fever Flash game, rebuilt in HTML5. Up to 6 players on one keyboard, powerups and computer opponents. No Flash needed.">
+  <meta property="og:url" content="https://eliasfloreteng.github.io/curve-fever/">
+  <meta property="og:image" content="https://eliasfloreteng.github.io/curve-fever/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Colourful curves racing across a black field in Curve Fever">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Curve Fever – Play Achtung, die Kurve! Online Free">
+  <meta name="twitter:description" content="The classic Curve Fever Flash game, rebuilt in HTML5. Up to 6 players on one keyboard. No Flash needed.">
+  <meta name="twitter:image" content="https://eliasfloreteng.github.io/curve-fever/img/og-image.png">
+
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="modulepreload" href="js/engine.js">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["VideoGame", "WebApplication"],
+    "name": "Curve Fever Classic",
+    "alternateName": ["Curve Fever", "Curve Fever 1", "Achtung, die Kurve!", "Zatacka"],
+    "url": "https://eliasfloreteng.github.io/curve-fever/",
+    "image": "https://eliasfloreteng.github.io/curve-fever/img/og-image.png",
+    "description": "A faithful HTML5 remake of the Curve Fever 1 Flash game (Achtung, die Kurve!). Up to 6 players on one keyboard, powerups and computer opponents.",
+    "genre": ["Arcade", "Party game", "Snake"],
+    "gamePlatform": ["Web browser", "PC", "Mac", "Linux"],
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Any",
+    "playMode": ["MultiPlayer", "SinglePlayer"],
+    "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 6 },
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Elias Floreteng", "url": "https://github.com/eliasfloreteng" },
+    "codeRepository": "https://github.com/eliasfloreteng/curve-fever"
+  }
+  </script>
+</head>
+<body>
+  <main id="app" aria-label="Curve Fever game">
+    <div id="stage">
+
+      <!-- ============================== MENU ============================== -->
+      <section id="menu" class="screen" aria-label="Choose players">
+        <a class="logo menu-logo" href="#about" aria-label="Curve Fever – about the game" tabindex="-1"></a>
+        <button id="tutorial-btn" class="box-btn tutorial-btn" type="button">Tutorial</button>
+
+        <div class="col-head left-head">left</div>
+        <div class="col-head right-head">right</div>
+        <div id="player-rows" role="list"></div>
+
+        <div class="demo-box">
+          <div class="demo-title">Computer demo</div>
+          <canvas id="demo" width="300" height="300" aria-label="The computer playing a demo round"></canvas>
+        </div>
+
+        <div class="mode-btns" role="radiogroup" aria-label="Game mode">
+          <button id="arcade-btn" class="mode-btn" type="button" role="radio">Arcade</button>
+          <button id="classic-btn" class="mode-btn" type="button" role="radio">Classic</button>
+        </div>
+
+        <div class="toggles menu-toggles">
+          <button class="toggle" data-toggle="music" type="button">Music: <b>on</b></button>
+          <button class="toggle" data-toggle="sound" type="button">Sound: <b>on</b></button>
+        </div>
+
+        <button id="play-btn" class="play-btn" type="button">
+          <span id="play-line1">Select the players and assign keys</span>
+          <span id="play-line2">Press SPACE to PLAY</span>
+        </button>
+        <button id="touch-btn" class="box-btn touch-btn" type="button" hidden>Touch play vs computer</button>
+
+        <p id="hint" class="hint"></p>
+        <p class="credits">Fan remake of Curve Fever 1 · <a href="#about">about</a> · <a href="https://github.com/eliasfloreteng/curve-fever" rel="noopener">source</a> · <a href="https://github.com/gameyoga/Curve-Fever-1" rel="noopener" title="The archived Flash original that inspired this remake">inspiration</a></p>
+
+        <div id="attention" class="dialog" hidden role="dialog" aria-modal="true" aria-labelledby="attention-title">
+          <h2 id="attention-title">Attention,</h2>
+          <p>You're about to play the game in <em>SINGLE</em> player mode against the <em>computer</em>.<br>
+            The game is meant to be played in <em>MULTIPLAYER</em> mode with <em>friends</em>.<br>
+            So please get some friends or colleagues over here and play it together.</p>
+          <p>Do you want to continue single player mode anyway?</p>
+          <div class="dialog-btns">
+            <button id="attention-no" class="yellow-btn" type="button">NO, cancel</button>
+            <button id="attention-yes" class="yellow-btn" type="button">YES, play!</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== GAME ============================== -->
+      <section id="game" class="screen" hidden aria-label="Game">
+        <div id="field-wrap">
+          <div id="field">
+            <canvas id="trails" aria-hidden="true"></canvas>
+            <canvas id="top" aria-label="Playing field"></canvas>
+            <div id="pause-screen" class="field-msg" hidden>Paused</div>
+            <div id="win-screen" class="win" hidden>
+              <div id="win-text"></div>
+              <div class="win-sub">Press SPACE to go to the menu</div>
+            </div>
+            <div id="touch-left" class="touch-zone" hidden></div>
+            <div id="touch-right" class="touch-zone" hidden></div>
+          </div>
+        </div>
+        <aside id="sidebar">
+          <div class="logo side-logo"></div>
+          <div class="goal-label">goal</div>
+          <div id="goal" class="goal">10</div>
+          <div class="goal-sub">2 points diff</div>
+          <ol id="scores" class="scores"></ol>
+          <div class="toggles side-toggles">
+            <button class="toggle" data-toggle="music" type="button">Music: <b>on</b></button>
+            <button class="toggle" data-toggle="sound" type="button">Sound: <b>on</b></button>
+          </div>
+          <div id="space-msg" class="space-msg">Space to continue</div>
+          <button id="menu-btn" class="box-btn menu-btn" type="button">Menu (Esc)</button>
+        </aside>
+      </section>
+
+      <!-- ============================ TUTORIAL ============================ -->
+      <section id="help" class="screen help" hidden aria-label="Tutorial">
+        <div class="help-text">
+          <p><b>Goal:</b> Stay alive and do not crash into others. Every time someone else dies, you get a point. The first to reach the goal wins the game.</p>
+          <p><b>Controls:</b> Press your left or right key to turn left or right. Your curve will make <em>holes</em>, where you and others can try to sneak through. Do not touch the walls or any line!</p>
+          <p><b>Game mode:</b> You can play either in <em>arcade</em> mode, or in <em>classic</em> mode. The only difference is that classic mode has no powerups.</p>
+          <p><b>Play together:</b> Up to 6 players on 1 keyboard! Short on friends? Click <em>CPU</em> next to a player to let the computer play.</p>
+        </div>
+        <div class="help-pu">
+          <p><b>Powerups:</b> They can help you in your struggle.</p>
+          <div id="pu-legend"></div>
+        </div>
+        <button id="help-back" class="box-btn help-back" type="button">Click here to go to the menu</button>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===================== About (crawlable content) ===================== -->
+  <article id="about" class="about">
+    <h1>Curve Fever Classic – Achtung, die Kurve! in your browser</h1>
+    <p>
+      <strong>Curve Fever</strong> was one of the most played Flash games of the early 2010s: a fast,
+      chaotic party game where every player steers a growing line and tries to survive the longest.
+      When Adobe Flash was switched off the original stopped working. This is a free, open-source
+      <strong>HTML5 remake of Curve Fever 1</strong> that recreates the original's rules, speeds,
+      powerups and computer opponents as closely as possible, so you can play it again without Flash,
+      plugins or downloads. It is itself a remake of the 1995 DOS classic
+      <strong>Achtung, die Kurve!</strong> (also known as <em>Zatacka</em>).
+    </p>
+
+    <h2>How to play Curve Fever</h2>
+    <ol>
+      <li>Click a player's name or press its number (1–6) and press the two keys you want to steer with.</li>
+      <li>Add at least two players, or click <em>CPU</em> to add computer opponents.</li>
+      <li>Choose <em>Arcade</em> (with powerups) or <em>Classic</em> (old-school Achtung, no powerups).</li>
+      <li>Press <kbd>Space</kbd> to play. <kbd>Space</kbd> also starts each round and pauses the game; <kbd>Esc</kbd> returns to the menu.</li>
+    </ol>
+    <p>
+      Every time a curve crashes, everyone still alive scores a point. The goal is 10 points per
+      opponent, and you have to win by at least 2 points. Lines have random holes you can slip through.
+    </p>
+
+    <h2>Default controls</h2>
+    <table>
+      <thead><tr><th>Player</th><th>Left</th><th>Right</th></tr></thead>
+      <tbody>
+        <tr><td>Fred (red)</td><td>←</td><td>→</td></tr>
+        <tr><td>Greenlee (green)</td><td>Z</td><td>X</td></tr>
+        <tr><td>Pinkney (pink)</td><td>N</td><td>M</td></tr>
+        <tr><td>Bluebell, Willem, Greydon</td><td colspan="2">pick any keys you like</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Powerups</h2>
+    <p>Green powerups affect you, red ones affect your opponents and blue ones affect everybody.</p>
+    <ul id="pu-list" class="pu-list">
+      <li data-pu="0"><b>Speed up</b> (green, 3 s) – you go twice as fast, with wider turns.</li>
+      <li data-pu="1"><b>Slow down</b> (green, 10 s) – you go half as fast, with tighter turns.</li>
+      <li data-pu="2"><b>Thin line</b> (green, 15 s) – your line is half as thick.</li>
+      <li data-pu="3"><b>Fly</b> (green, 5 s) – you leave no line and can't crash into lines.</li>
+      <li data-pu="4"><b>Go through walls</b> (green, 15 s) – the walls wrap around for you.</li>
+      <li data-pu="5"><b>Square turns</b> (green, 15 s) – you turn in sharp 90° corners.</li>
+      <li data-pu="6"><b>Slow down others</b> (red, 5 s) – everybody else goes half as fast.</li>
+      <li data-pu="7"><b>Speed up others</b> (red, 3 s) – everybody else goes twice as fast.</li>
+      <li data-pu="8"><b>Thick lines</b> (red, 7.5 s) – everybody else's line becomes twice as thick.</li>
+      <li data-pu="9"><b>Square turns for others</b> (red, 7.5 s) – everybody else turns in 90° corners.</li>
+      <li data-pu="10"><b>Reversed keys</b> (red, 5 s) – everybody else's left and right are swapped.</li>
+      <li data-pu="11"><b>Open borders</b> (blue, 10 s) – everyone can go through the walls.</li>
+      <li data-pu="12"><b>Clear</b> (blue) – wipes every line off the field.</li>
+      <li data-pu="13"><b>More powerups</b> (blue, 5 s) – powerups appear four times as often.</li>
+      <li data-pu="14"><b>Random</b> – a surprise: any of the powerups above.</li>
+    </ul>
+
+    <h2>What's new compared to the Flash original</h2>
+    <ul>
+      <li>Runs in any modern browser, on Windows, macOS, Linux and ChromeOS – no Flash player.</li>
+      <li>Smooth 100 Hz movement instead of 25 frames per second, with the same speeds and turning circle.</li>
+      <li>Add computer players to any seat, mixed with human players.</li>
+      <li>Your players, keys and settings are remembered.</li>
+      <li>Fullscreen (press <kbd>F</kbd>), touch controls against the computer, and offline play once loaded.</li>
+      <li>No ads.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Is this the official Curve Fever?</h3>
+    <p>No. It's an unofficial, non-commercial fan remake of the 2010 Flash version, written from scratch in
+      JavaScript. Curve Fever is a trademark of its owners; the modern official game is
+      <a href="https://curvefever.pro" rel="noopener">Curve Fever Pro</a>.</p>
+    <h3>Can I play online against other people?</h3>
+    <p>This version is local multiplayer, like the original: up to 6 people around one keyboard. You can also play against the computer.</p>
+    <h3>Does it work offline?</h3>
+    <p>Yes. After the first visit the game is cached, so it keeps working without an internet connection.</p>
+
+    <footer class="site-footer">
+      <p>Open source on <a href="https://github.com/eliasfloreteng/curve-fever" rel="noopener">GitHub</a> ·
+        MIT licence · Made by <a href="https://github.com/eliasfloreteng" rel="noopener">Elias Floreteng</a> ·
+        Inspired by the <a href="https://github.com/gameyoga/Curve-Fever-1" rel="noopener">Curve-Fever-1 archive</a> ·
+        <a href="#app">Back to the game ↑</a></p>
+    </footer>
+  </article>
+
+  <noscript><p class="noscript">Curve Fever needs JavaScript to run.</p></noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
